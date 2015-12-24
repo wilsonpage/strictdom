@@ -1,0 +1,15 @@
+{
+  "name": "strict-dom",
+  "description": "",
+  "main": "strict-dom.js",
+  "scripts": [
+    "strict-dom.js"
+  ],
+  "ignore": [
+    "examples/",
+    "test/",
+    "README.md"
+  ],
+  "license": "MIT",
+  "_source": "git@github.com/wilsonpage/strict-dom.git"
+}

@@ -1,0 +1,6 @@
+**/.*
+webpack.config.js
+bower_components
+bower.json
+index.html
+test

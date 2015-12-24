@@ -1,0 +1,14 @@
+<script src="/base/strict-dom.js"></script>
+<script>
+(function() {
+  onmessage = function(e) {
+    if (!e.data.script) return;
+    var result;
+
+    try { result = eval(e.data.script); }
+    catch (e) { result = { error: e.message }; }
+
+    parent.postMessage({ result: result }, '*');
+  };
+})();
+</script>
