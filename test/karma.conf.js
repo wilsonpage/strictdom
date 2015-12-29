@@ -27,9 +27,9 @@ module.exports = function(config) {
     },
 
     files: [
-      'strict-dom.js',
+      'strictdom.js',
       'test/test.js',
-      { pattern: 'test/lib/iframe.html', included: false }
+      { pattern: 'test/lib/*', included: false }
     ]
   });
 };

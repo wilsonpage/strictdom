@@ -1,20 +1,21 @@
 {
-  "name": "strict-dom",
+  "name": "strictdom",
   "description": "",
-  "main": "strict-dom.js",
+  "main": "strictdom.js",
   "scripts": {
     "test": "npm run -s unit && npm run -s lint",
     "unit": "karma start test/karma.conf.js --single-run",
-    "lint": "jshint strict-dom.js"
+    "test-dev": "karma start test/karma.conf.js",
+    "lint": "jshint strictdom.js"
   },
-  "homepage": "https://github.com/wilsonpage/strict-dom",
+  "homepage": "https://github.com/wilsonpage/strictdom",
   "author": {
     "name": "Wilson Page",
     "email": "wilsonpage@me.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/wilsonpage/strict-dom.git"
+    "url": "git://github.com/wilsonpage/strictdom.git"
   },
   "license": "MIT",
   "devDependencies": {

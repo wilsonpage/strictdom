@@ -32,9 +32,6 @@
   "-W078": true,
 
   "predef": [
-    "define",
-    "caches",
-    "Request",
-    "Response"
+    "define"
   ]
 }
