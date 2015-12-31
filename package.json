@@ -31,5 +31,5 @@
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0"
   },
-  "version": "0.1.0"
+  "version": "1.0.0"
 }
