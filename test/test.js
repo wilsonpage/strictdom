@@ -28,16 +28,16 @@ suite('strictdom', function() {
     test('appendChild', function() {
       var el2 = document.createElement('span');
 
-      testWrite(function() { el1.appendChild(el2); });
+      testMutate(function() { el1.appendChild(el2); });
       assert.isTrue(el1.contains(el2));
 
       var el3 = document.createElement('span');
 
-      strictdom.phase('write', function() {
+      strictdom.phase('mutate', function() {
         el1.remove();
       });
 
-      testWriteDetached(function() { el1.appendChild(el3); });
+      testMutateDetached(function() { el1.appendChild(el3); });
       assert.isTrue(el1.contains(el3));
     });
 
@@ -46,13 +46,13 @@ suite('strictdom', function() {
 
       setup(function() {
         el2 = document.createElement('span');
-        strictdom.phase('write', function() {
+        strictdom.phase('mutate', function() {
           el1.appendChild(el2);
         });
       });
 
       test('attached', function() {
-        testWrite(function() {
+        testMutate(function() {
           el1.removeChild(el2);
         });
 
@@ -60,11 +60,11 @@ suite('strictdom', function() {
       });
 
       test('detached', function() {
-        strictdom.phase('write', function() {
+        strictdom.phase('mutate', function() {
           el1.remove();
         });
 
-        testWriteDetached(function() {
+        testMutateDetached(function() {
           el1.removeChild(el2);
         });
 
@@ -81,24 +81,24 @@ suite('strictdom', function() {
     });
 
     test('.clientLeft', function() {
-      var result = testRead(function() { return el.clientLeft; });
+      var result = testMeasure(function() { return el.clientLeft; });
       assert.equal(result, 0);
     });
 
     test('.scrollTop', function() {
-      var result = testRead(function() { return el.scrollTop; });
-      testWrite(function() { el.scrollTop = 10; });
+      var result = testMeasure(function() { return el.scrollTop; });
+      testMutate(function() { el.scrollTop = 10; });
       assert.equal(result, 0);
     });
 
     test('.scrollLeft', function() {
-      var result = testRead(function() { return el.scrollLeft; });
-      testWrite(function() { el.scrollLeft = 10; });
+      var result = testMeasure(function() { return el.scrollLeft; });
+      testMutate(function() { el.scrollLeft = 10; });
       assert.equal(result, 0);
     });
 
     test('.innerHTML', function() {
-      var result = testWrite(function() {
+      var result = testMutate(function() {
         return el.innerHTML = '<h1>foo</h1>';
       });
 
@@ -110,12 +110,12 @@ suite('strictdom', function() {
     test('.outerHTML', function() {
       var el2;
 
-      strictdom.phase('write', function() {
+      strictdom.phase('mutate', function() {
         el2 = document.createElement('div');
         el.appendChild(el2);
       });
 
-      var result = testWrite(function() {
+      var result = testMutate(function() {
         return el2.outerHTML = '<h1>foo</h1>';
       });
 
@@ -125,12 +125,12 @@ suite('strictdom', function() {
     });
 
     test('.remove()', function() {
-      strictdom.phase('write', function() {
+      strictdom.phase('mutate', function() {
         dom.appendChild(el);
         assert.isTrue(dom.contains(el));
       });
 
-      testWrite(function() { el.remove(); });
+      testMutate(function() { el.remove(); });
       assert.isFalse(dom.contains(el));
     });
   });
@@ -143,54 +143,54 @@ suite('strictdom', function() {
     });
 
     test('.offsetWidth', function() {
-      var result = testRead(function() { return el.offsetWidth; });
+      var result = testMeasure(function() { return el.offsetWidth; });
       assert.equal(result, 100);
     });
 
     test('.offsetHeight', function() {
-      var result = testRead(function() { return el.offsetHeight; });
+      var result = testMeasure(function() { return el.offsetHeight; });
       assert.equal(result, 50);
     });
 
     test('.offsetLeft', function() {
-      strictdom.phase('write', function() {
+      strictdom.phase('mutate', function() {
         el.style.marginLeft = '50px';
       });
 
-      var result = testRead(function() { return el.offsetLeft; });
+      var result = testMeasure(function() { return el.offsetLeft; });
       assert.equal(result, 50);
     });
 
     test('.offsetTop', function() {
-      strictdom.phase('write');
+      strictdom.phase('mutate');
       el.style.marginTop = '10px';
       strictdom.phase(null);
 
-      var result = testRead(function() { return el.offsetTop; });
+      var result = testMeasure(function() { return el.offsetTop; });
       assert.equal(result, 10);
     });
 
     suite('.style', function() {
       test('.height', function() {
-        testWrite(function() { el.style.height = '100px'; });
+        testMutate(function() { el.style.height = '100px'; });
         assert.equal(el.style.height, '100px');
       });
 
       test('.getPropertyValue()', function() {
-        testWrite(function() { el.style.height = '100px'; });
+        testMutate(function() { el.style.height = '100px'; });
         assert.equal(el.style.getPropertyValue('height'), '100px');
       });
 
       test('.removeProperty()', function() {
-        testWrite(function() { el.style.height = '100px'; });
+        testMutate(function() { el.style.height = '100px'; });
         assert.equal(el.style.getPropertyValue('height'), '100px');
 
-        testWrite(function() { el.style.removeProperty('height'); });
+        testMutate(function() { el.style.removeProperty('height'); });
         assert.equal(el.style.getPropertyValue('height'), '');
       });
 
       test('.setProperty()', function() {
-        testWrite(function() { el.style.setProperty('height', '100px'); });
+        testMutate(function() { el.style.setProperty('height', '100px'); });
         assert.equal(el.style.height, '100px');
       });
     });
@@ -204,12 +204,12 @@ suite('strictdom', function() {
     });
 
     test('.getBoundingClientRect()', function() {
-      var result = testRead(function() { return el.getBoundingClientRect(); });
+      var result = testMeasure(function() { return el.getBoundingClientRect(); });
       assert.equal(result.width, 100);
     });
 
     test('.getClientRects()', function() {
-      var result = testRead(function() { return el.getClientRects(); });
+      var result = testMeasure(function() { return el.getClientRects(); });
       assert.equal(result[0].width, 100);
     });
   });
@@ -224,12 +224,12 @@ suite('strictdom', function() {
     });
 
     test('.data', function() {
-      testWrite(function() { return textNode.data = 'bar'; });
+      testMutate(function() { return textNode.data = 'bar'; });
       assert.equal(el.textContent, 'bar');
     });
 
     test('.remove()', function() {
-      testWrite(function() { return textNode.remove(); });
+      testMutate(function() { return textNode.remove(); });
       assert.equal(el.textContent, '');
     });
   });
@@ -245,36 +245,36 @@ suite('strictdom', function() {
     });
 
     test('.width', function() {
-      var result = testRead(function() { return el.width; });
+      var result = testMeasure(function() { return el.width; });
       assert.equal(result, width);
-      testWrite(function() { el.width = 100; });
-      result = testRead(function() { return el.width; });
+      testMutate(function() { el.width = 100; });
+      result = testMeasure(function() { return el.width; });
       assert.equal(result, 100);
     });
 
     test('.height', function() {
-      var result = testRead(function() { return el.height; });
+      var result = testMeasure(function() { return el.height; });
       assert.equal(result, height);
-      testWrite(function() { el.height = 50; });
-      result = testRead(function() { return el.height; });
+      testMutate(function() { el.height = 50; });
+      result = testMeasure(function() { return el.height; });
       assert.equal(result, 50);
     });
 
     test('.x', function() {
-      strictdom.phase('write', function() {
+      strictdom.phase('mutate', function() {
         el.style.marginLeft = '50px';
       });
 
-      var result = testRead(function() { return el.x; });
+      var result = testMeasure(function() { return el.x; });
       assert.equal(result, 50);
     });
 
     test('.y', function() {
-      strictdom.phase('write', function() {
+      strictdom.phase('mutate', function() {
         el.style.marginLeft = '50px';
       });
 
-      var result = testRead(function() { return el.x; });
+      var result = testMeasure(function() { return el.x; });
       assert.equal(result, 50);
     });
   });
@@ -287,26 +287,26 @@ suite('strictdom', function() {
     });
 
     test('.add()', function() {
-      testWrite(function() { return el.classList.add('bar'); });
+      testMutate(function() { return el.classList.add('bar'); });
       assert.equal(el.className, 'foo bar');
     });
 
     test('.remove()', function() {
-      testWrite(function() { return el.classList.remove('foo'); });
+      testMutate(function() { return el.classList.remove('foo'); });
       assert.equal(el.className, '');
     });
 
     test('.toggle()', function() {
-      testWrite(function() { return el.classList.toggle('bar'); });
+      testMutate(function() { return el.classList.toggle('bar'); });
       assert.equal(el.className, 'foo bar');
 
-      testWrite(function() { return el.classList.toggle('foo'); });
+      testMutate(function() { return el.classList.toggle('foo'); });
       assert.equal(el.className, 'bar');
 
-      testWrite(function() { return el.classList.toggle('foo', false); });
+      testMutate(function() { return el.classList.toggle('foo', false); });
       assert.equal(el.className, 'bar');
 
-      testWrite(function() { return el.classList.toggle('foo', true); });
+      testMutate(function() { return el.classList.toggle('foo', true); });
       assert.equal(el.className, 'bar foo');
     });
 
@@ -323,26 +323,26 @@ suite('strictdom', function() {
     });
 
     test('.getComputedStyle()', function() {
-      var result = testRead(function() { return getComputedStyle(el); });
+      var result = testMeasure(function() { return getComputedStyle(el); });
       assert.equal(result.height, '100px');
     });
 
     test('.scrollBy()', function() {
-      testWrite(function() { return scrollBy(1, 1); });
+      testMutate(function() { return scrollBy(1, 1); });
     });
 
     test('.scrollTo()', function() {
-      testWrite(function() { return scrollTo(1, 1); });
+      testMutate(function() { return scrollTo(1, 1); });
     });
 
     test('.scroll()', function() {
-      testWrite(function() { return scroll(1, 1); });
+      testMutate(function() { return scroll(1, 1); });
     });
 
     // Haven't found a way of testing this
     // yet as Karma runs tests inside an iframe
     test('.innerWidth (iframe)', function() {
-      var result = testRead(function() { return window.innerWidth; });
+      var result = testMeasure(function() { return window.innerWidth; });
       assert.equal(result, winWidth);
     });
 
@@ -360,10 +360,10 @@ suite('strictdom', function() {
           removeEventListener('message', fn);
 
           // Expect it to throw
-          assert.include(e.data.result.error, 'read');
+          assert.include(e.data.result.error, 'measure');
 
           iframe.contentWindow.postMessage({
-            script: 'strictdom.phase(\'read\'); window.innerWidth;'
+            script: 'strictdom.phase(\'measure\'); window.innerWidth;'
           }, '*');
 
           addEventListener('message', function fn(e) {
@@ -375,7 +375,7 @@ suite('strictdom', function() {
         });
       };
 
-      strictdom.phase('write', function() {
+      strictdom.phase('mutate', function() {
         dom.appendChild(iframe);
       });
     });
@@ -383,8 +383,8 @@ suite('strictdom', function() {
 
   suite('.phase()', function() {
     test('it only accepts known phases', function() {
-      strictdom.phase('write');
-      strictdom.phase('read');
+      strictdom.phase('mutate');
+      strictdom.phase('measure');
       strictdom.phase(null);
 
       assert.throws(function() {
@@ -393,20 +393,20 @@ suite('strictdom', function() {
     });
 
     test('returns the current phase when no arguments given', function() {
-      strictdom.phase('write');
-      assert.equal(strictdom.phase(), 'write');
+      strictdom.phase('mutate');
+      assert.equal(strictdom.phase(), 'mutate');
     });
 
     test('when given a sync phase-task it reverts to the previous phase after', function() {
-      strictdom.phase('read');
-      assert.equal(strictdom.phase(), 'read');
+      strictdom.phase('measure');
+      assert.equal(strictdom.phase(), 'measure');
 
-      strictdom.phase('write', function() {
-        assert.equal(strictdom.phase(), 'write');
+      strictdom.phase('mutate', function() {
+        assert.equal(strictdom.phase(), 'mutate');
         // do mutations ...
       });
 
-      assert.equal(strictdom.phase(), 'read');
+      assert.equal(strictdom.phase(), 'measure');
     });
   });
 
@@ -424,45 +424,45 @@ suite('strictdom', function() {
     });
   });
 
-  function testWrite(fn) {
+  function testMutate(fn) {
     var result;
 
     strictdom.phase(null);
     assert.throws(fn);
-    strictdom.phase('read');
+    strictdom.phase('measure');
     assert.throws(fn);
-    strictdom.phase('write');
+    strictdom.phase('mutate');
     assert.doesNotThrow(function() { result = fn(); });
     strictdom.phase(null);
 
     return result;
   }
 
-  function testWriteDetached(fn) {
+  function testMutateDetached(fn) {
     var result;
 
-    strictdom.phase('read');
+    strictdom.phase('measure');
     result = fn();
     strictdom.phase(null);
 
     return result;
   }
 
-  function testRead(fn) {
+  function testMeasure(fn) {
     var result;
 
     strictdom.phase(null);
     assert.throws(fn);
-    strictdom.phase('write');
+    strictdom.phase('mutate');
     assert.throws(fn);
-    strictdom.phase('read');
+    strictdom.phase('measure');
     assert.doesNotThrow(function() { result = fn(); });
 
     return result;
   }
 
   function createElement(html) {
-    return strictdom.phase('write', function() {
+    return strictdom.phase('mutate', function() {
       var parent = document.createElement('div');
       parent.innerHTML = html;
       var el = parent.firstElementChild;

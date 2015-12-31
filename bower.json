@@ -1,15 +1,15 @@
 {
   "name": "strictdom",
-  "description": "",
+  "description": "Throws errors when performance sensitive DOM APIs are called out of 'phase'",
   "main": "strictdom.js",
   "scripts": [
     "strictdom.js"
   ],
   "ignore": [
+    "**/.*",
     "examples/",
     "test/",
     "README.md"
   ],
-  "license": "MIT",
-  "_source": "git@github.com/wilsonpage/strictdom.git"
+  "license": "MIT"
 }

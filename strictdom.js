@@ -18,73 +18,73 @@ var isWebkit = !!window.webkitURL;
 var properties = {
   prototype: {
     Document: {
-      execCommand: Write,
-      elementFromPoint: Read,
-      elementsFromPoint: Read,
-      scrollingElement: Read
+      execCommand: Mutate,
+      elementFromPoint: Measure,
+      elementsFromPoint: Measure,
+      scrollingElement: Measure
     },
 
     Node: {
       appendChild: {
-        type: Write,
+        type: Mutate,
         test: function(dom, parent, args) {
           var attached = isAttached(parent) || isAttached(args[0]);
-          if (attached && dom.not('write')) throw error(3, this.name);
+          if (attached && dom.not('mutate')) throw error(3, this.name);
         }
       },
 
       insertBefore: {
-        type: Write,
+        type: Mutate,
         test: function(dom, parent, args) {
           var attached = isAttached(parent) || isAttached(args[0]);
-          if (attached && dom.not('write')) throw error(3, this.name);
+          if (attached && dom.not('mutate')) throw error(3, this.name);
         }
       },
 
       removeChild: {
-        type: Write,
+        type: Mutate,
         test: function(dom, parent, args) {
           var attached = isAttached(parent) || isAttached(args[0]);
-          if (attached && dom.not('write')) throw error(3, this.name);
+          if (attached && dom.not('mutate')) throw error(3, this.name);
         }
       },
 
-      textContent: Write
+      textContent: Mutate
     },
 
     Element: {
-      scrollIntoView: Write,
-      scrollBy: Write,
-      scrollTo: Write,
-      getClientRects: Read,
-      getBoundingClientRect: Read,
-      clientLeft: Read,
-      clientWidth: Read,
-      clientHeight: Read,
+      scrollIntoView: Mutate,
+      scrollBy: Mutate,
+      scrollTo: Mutate,
+      getClientRects: Measure,
+      getBoundingClientRect: Measure,
+      clientLeft: Measure,
+      clientWidth: Measure,
+      clientHeight: Measure,
       scrollLeft: Accessor,
       scrollTop: Accessor,
-      scrollWidth: Read,
-      scrollHeight: Read,
-      innerHTML: Write,
-      outerHTML: Write,
-      insertAdjacentHTML: Write,
-      remove: Write,
-      setAttribute: Write,
-      removeAttribute: Write,
-      className: Write,
+      scrollWidth: Measure,
+      scrollHeight: Measure,
+      innerHTML: Mutate,
+      outerHTML: Mutate,
+      insertAdjacentHTML: Mutate,
+      remove: Mutate,
+      setAttribute: Mutate,
+      removeAttribute: Mutate,
+      className: Mutate,
       classList: ClassList
     },
 
     HTMLElement: {
-      offsetLeft: Read,
-      offsetTop: Read,
-      offsetWidth: Read,
-      offsetHeight: Read,
-      offsetParent: Read,
+      offsetLeft: Measure,
+      offsetTop: Measure,
+      offsetWidth: Measure,
+      offsetHeight: Measure,
+      offsetParent: Measure,
       innerText: Accessor,
       outerText: Accessor,
-      focus: Read,
-      blur: Read,
+      focus: Measure,
+      blur: Measure,
       style: Style,
 
       // `element.dataset` is hard to wrap.
@@ -96,47 +96,47 @@ var properties = {
     },
 
     CharacterData: {
-      remove: Write,
-      data: Write
+      remove: Mutate,
+      data: Mutate
     },
 
     Range: {
-      getClientRects: Read,
-      getBoundingClientRect: Read
+      getClientRects: Measure,
+      getBoundingClientRect: Measure
     },
 
     MouseEvent: {
-      layerX: Read,
-      layerY: Read,
-      offsetX: Read,
-      offsetY: Read
+      layerX: Measure,
+      layerY: Measure,
+      offsetX: Measure,
+      offsetY: Measure
     },
 
     HTMLButtonElement: {
-      reportValidity: Read
+      reportValidity: Measure
     },
 
     HTMLDialogElement: {
-      showModal: Write
+      showModal: Mutate
     },
 
     HTMLFieldSetElement: {
-      reportValidity: Read
+      reportValidity: Measure
     },
 
     HTMLImageElement: {
       width: Accessor,
       height: Accessor,
-      x: Read,
-      y: Read
+      x: Measure,
+      y: Measure
     },
 
     HTMLInputElement: {
-      reportValidity: Read
+      reportValidity: Measure
     },
 
     HTMLKeygenElement: {
-      reportValidity: Read
+      reportValidity: Measure
     },
 
     SVGSVGElement: {
@@ -147,62 +147,62 @@ var properties = {
   instance: {
     window: {
       getComputedStyle: {
-        type: Read,
+        type: Measure,
 
         /**
          * Throws when the Element is in attached
-         * and strictdom is not in the 'read' phase.
+         * and strictdom is not in the 'measure' phase.
          *
          * @param  {StrictDom} strictdom
          * @param  {Window} win
          * @param  {Object} args
          */
         test: function(strictdom, win, args) {
-          if (isAttached(args[0]) && strictdom.not('read')) {
+          if (isAttached(args[0]) && strictdom.not('measure')) {
             throw error(2, 'getComputedStyle');
           }
         }
       },
 
       innerWidth: {
-        type: isWebkit ? Value : Read,
+        type: isWebkit ? Value : Measure,
 
         /**
          * Throws when the window is nested (in <iframe>)
-         * and StrictDom is not in the 'read' phase.
+         * and StrictDom is not in the 'measure' phase.
          *
          * @param  {StrictDom} strictdom
          */
         test: function(strictdom) {
           var inIframe = window !== window.top;
-          if (inIframe && strictdom.not('read')) {
+          if (inIframe && strictdom.not('measure')) {
             throw error(2, '`.innerWidth` (in iframe)');
           }
         }
       },
 
       innerHeight: {
-        type: isWebkit ? Value : Read,
+        type: isWebkit ? Value : Measure,
 
         /**
          * Throws when the window is nested (in <iframe>)
-         * and StrictDom is not in the 'read' phase.
+         * and StrictDom is not in the 'measure' phase.
          *
          * @param  {StrictDom} strictdom
          */
         test: function(strictdom) {
           var inIframe = window !== window.top;
-          if (inIframe && strictdom.not('read')) {
+          if (inIframe && strictdom.not('measure')) {
             throw error(2, '`.innerHeight` (in iframe)');
           }
         }
       },
 
-      scrollX: isWebkit ? Value : Read,
-      scrollY: isWebkit ? Value : Read,
-      scrollBy: Write,
-      scrollTo: Write,
-      scroll: Write,
+      scrollX: isWebkit ? Value : Measure,
+      scrollY: isWebkit ? Value : Measure,
+      scrollBy: Mutate,
+      scrollTo: Mutate,
+      scroll: Mutate,
     }
   }
 };
@@ -243,7 +243,7 @@ StrictDom.prototype = {
   },
 
   knownPhase: function(value) {
-    return !!~['read', 'write', null].indexOf(value);
+    return !!~['measure', 'mutate', null].indexOf(value);
   },
 
   is: function(value) {
@@ -403,22 +403,22 @@ Property.prototype = {
 };
 
 /**
- * A wrapper for properties that read
+ * A wrapper for properties that measure
  * geometry data from the DOM.
  *
- * Once a `Read` property is enabled
+ * Once a `Measure` property is enabled
  * it can only be used when StrictDom
- * is in the 'read' phase, else it
+ * is in the 'measure' phase, else it
  * will throw.
  *
  * @constructor
  * @extends Property
  */
-function Read() {
+function Measure() {
   Property.apply(this, arguments);
 }
 
-Read.prototype = extend(Property, {
+Measure.prototype = extend(Property, {
 
   /**
    * Return a wrapped descriptor.
@@ -427,7 +427,7 @@ Read.prototype = extend(Property, {
    * @return {Object}
    */
   wrap: function(descriptor) {
-    debug('wrap read', this.name);
+    debug('wrap measure', this.name);
 
     var clone = Object.assign({}, descriptor);
     var value = descriptor.value;
@@ -436,13 +436,13 @@ Read.prototype = extend(Property, {
 
     if (typeof value == 'function') {
       clone.value = function() {
-        debug('read', self.name);
+        debug('measure', self.name);
         self.test(self.strictdom, this, arguments);
         return value.apply(this, arguments);
       };
     } else if (get) {
       clone.get = function() {
-        debug('read', self.name);
+        debug('measure', self.name);
         self.test(self.strictdom, this, arguments);
         return get.apply(this, arguments);
       };
@@ -453,7 +453,7 @@ Read.prototype = extend(Property, {
 
   /**
    * Throws an Error if the element is attached
-   * and StrictDOM is not in the 'read' phase.
+   * and StrictDOM is not in the 'measure' phase.
    *
    * If methods/properties are used without
    * a context (eg. `getComputedStyle()` instead
@@ -464,30 +464,30 @@ Read.prototype = extend(Property, {
    * @param  {Node} ctx
    */
   test: function(strictdom, ctx) {
-    if (isAttached(ctx || window) && strictdom.not('read')) {
+    if (isAttached(ctx || window) && strictdom.not('measure')) {
       throw error(2, this.name);
     }
   }
 });
 
 /**
- * A wrapper for properties that write
+ * A wrapper for properties that mutate
  * to the DOM, triggering style/reflow
  * operations.
  *
- * Once a `Write` property is enabled
+ * Once a `Mutate` property is enabled
  * it can only be used when StrictDom
- * is in the 'read' phase, else it
+ * is in the 'measure' phase, else it
  * will throw.
  *
  * @constructor
  * @extends Property
  */
-function Write() {
+function Mutate() {
   Property.apply(this, arguments);
 }
 
-Write.prototype = extend(Property, {
+Mutate.prototype = extend(Property, {
 
   /**
    * Return a wrapped descriptor.
@@ -496,7 +496,7 @@ Write.prototype = extend(Property, {
    * @return {Object}
    */
   wrap: function(descriptor) {
-    debug('wrap write', this.name);
+    debug('wrap mutate', this.name);
 
     var clone = Object.assign({}, descriptor);
     var value = descriptor.value;
@@ -519,7 +519,7 @@ Write.prototype = extend(Property, {
 
   /**
    * Throws an Error if the element is attached
-   * and StrictDOM is not in the 'write' phase.
+   * and StrictDOM is not in the 'mutate' phase.
    *
    * If methods/properties are used without
    * a context (eg. `getComputedStyle()` instead
@@ -530,7 +530,7 @@ Write.prototype = extend(Property, {
    * @param  {Node} ctx
    */
   test: function(strictdom, ctx) {
-    if (isAttached(ctx || window) && strictdom.not('write')) {
+    if (isAttached(ctx || window) && strictdom.not('mutate')) {
       throw error(3, this.name);
     }
   }
@@ -540,8 +540,8 @@ Write.prototype = extend(Property, {
  * A wrapper for 'accessor' (get/set) properties.
  *
  * An `Accessor` should be used to wrap
- * properties that can both read and write
- * to the DOM (eg. `element.scrollTop`).
+ * properties that can both measure and mutate
+ * the DOM (eg. `element.scrollTop`).
  *
  * @constructor
  * @extends Property
@@ -583,8 +583,8 @@ Accessor.prototype = extend(Property, {
     return clone;
   },
 
-  testRead: Read.prototype.test,
-  testWrite: Write.prototype.test
+  testRead: Measure.prototype.test,
+  testWrite: Mutate.prototype.test
 });
 
 /**
@@ -662,7 +662,7 @@ Value.prototype = extend(Property, {
     return descriptor;
   },
 
-  test: Read.prototype.test
+  test: Measure.prototype.test
 });
 
 function Style() {
@@ -705,13 +705,13 @@ StrictStyle.prototype = {
   },
 
   setProperty: function(key, value) {
-    var illegal = isAttached(this.el) && this.strictdom.not('write');
+    var illegal = isAttached(this.el) && this.strictdom.not('mutate');
     if (illegal) throw error(1, 'style.' + key);
     return this._get()[key] = value;
   },
 
   removeProperty: function(key) {
-    var illegal = isAttached(this.el) && this.strictdom.not('write');
+    var illegal = isAttached(this.el) && this.strictdom.not('mutate');
     if (illegal) throw error(1, 'style.' + key);
     return this._get().removeProperty(key);
   }
@@ -749,7 +749,7 @@ StrictStyle.prototype = {
 
   function setter(key) {
     return function(value) {
-      var illegal = isAttached(this.el) && this.strictdom.not('write');
+      var illegal = isAttached(this.el) && this.strictdom.not('mutate');
       if (illegal) throw error(1, 'style.' + key);
       return this.setProperty(key, value);
     };
@@ -775,7 +775,7 @@ StrictClassList.prototype = {
   _get: function() { return this._getter.call(this.el); },
 
   add: function(className) {
-    var illegal = isAttached(this.el) && this.strictdom.not('write');
+    var illegal = isAttached(this.el) && this.strictdom.not('mutate');
     if (illegal) throw error(1, 'class names');
     this._get().add(className);
   },
@@ -785,13 +785,13 @@ StrictClassList.prototype = {
   },
 
   remove: function(className) {
-    var illegal = isAttached(this.el) && this.strictdom.not('write');
+    var illegal = isAttached(this.el) && this.strictdom.not('mutate');
     if (illegal) throw error(1, 'class names');
     this._get().remove(className);
   },
 
   toggle: function() {
-    var illegal = isAttached(this.el) && this.strictdom.not('write');
+    var illegal = isAttached(this.el) && this.strictdom.not('mutate');
     if (illegal) throw error(1, 'class names');
     var classList = this._get();
     return classList.toggle.apply(classList, arguments);
@@ -804,9 +804,9 @@ StrictClassList.prototype = {
 
 function error(type) {
   return new Error({
-    1: 'Can only set ' + arguments[1] + ' during \'write\' phase',
-    2: 'Can only get ' + arguments[1] + ' during \'read\' phase',
-    3: 'Can only call `.' + arguments[1] + '()` during \'write\' phase',
+    1: 'Can only set ' + arguments[1] + ' during \'mutate\' phase',
+    2: 'Can only get ' + arguments[1] + ' during \'measure\' phase',
+    3: 'Can only call `.' + arguments[1] + '()` during \'mutate\' phase',
     4: 'Invalid phase: ' + arguments[1]
   }[type]);
 }

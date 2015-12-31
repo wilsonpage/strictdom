@@ -1,6 +1,6 @@
 {
   "name": "strictdom",
-  "description": "",
+  "description": "Throws errors when performance sensitive DOM APIs are called out of 'phase'",
   "main": "strictdom.js",
   "scripts": {
     "test": "npm run -s unit && npm run -s lint",

@@ -1,18 +1,18 @@
 # strictdom [![Build Status](https://travis-ci.org/wilsonpage/strictdom.svg?branch=master)](https://travis-ci.org/wilsonpage/strictdom)
 
-> Wraps performance sensitive DOM APIs and throws errors when called in incorrect 'phase'.
+> Throws errors when performance sensitive DOM APIs are called out of 'phase'.
 
 ```js
-strictdom.phase('read');
+strictdom.phase('measure');
 element.clientWidth; // does not throw
-strictdom.phase('write');
+strictdom.phase('mutate');
 element.innerHTML = 'foo'; // does not throw
 ```
 
 ```js
-strictdom.phase('read');
+strictdom.phase('measure');
 element.innerHTML = 'foo'; // throws
-strictdom.phase('write');
+strictdom.phase('mutate');
 element.clientWidth; // throws
 ```
 
@@ -26,12 +26,10 @@ element.clientWidth; // throws
 - `document.elementFromPoint()`
 - `document.elementsFromPoint()`
 - `document.scrollingElement()`
-
 - `Node#appendChild()`
 - `Node#insertBefore()`
 - `Node#removeChild()`
 - `Node#textContent`
-
 - `Element#scrollIntoView()`
 - `Element#scrollBy()`
 - `Element#scrollTo()`
@@ -52,7 +50,6 @@ element.clientWidth; // throws
 - `Element#removeAttribute()`
 - `Element#className`
 - `Element#classList`
-
 - `HTMLElement.offsetLeft`
 - `HTMLElement.offsetTop`
 - `HTMLElement.offsetWidth`
@@ -63,32 +60,24 @@ element.clientWidth; // throws
 - `HTMLElement.focus()`
 - `HTMLElement.blur()`
 - `HTMLElement.style`
-
 - `CharacterData#remove()`
 - `CharacterData#data`
-
 - `Range#getClientRects()`
 - `Range#getBoundingClientRect()`
-
 - `MouseEvent#layerX`
 - `MouseEvent#layerY`
 - `MouseEvent#offsetX
 - `MouseEvent#offsetY`
-
 - `HTMLButtonElement#reportValidity()`
 - `HTMLDialogElement#showModal()`
 - `HTMLFieldSetElement#reportValidity()
-
 - `HTMLImageElement#width`
 - `HTMLImageElement#height`
 - `HTMLImageElement#x`
 - `HTMLImageElement#y`
-
 - `HTMLInputElement#reportValidity()`
 - `HTMLKeygenElement#reportValidity()`
-
 - `SVGSVGElement#currentScale()`
-
 - `window#getComputedStyle()`
 - `window#innerWidth`
 - `window#innerHeight`
@@ -102,6 +91,10 @@ element.clientWidth; // throws
 
 - No support for `element#dataset`. Need cross-browser technique of observing `element.dataset.foo = ...`. [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) could work, but only available in Gecko.
 - Detection for strange blink/webkit 'value' getters (eg. `window.scrollY`) is lame. Need something that is more robust (no sniffing), that doesn't cause reflow like `Object.getOwnPropertyDescriptor()` does.
+
+## Credits
+
+This project was forked from `esprehn/fx-framework`.
 
 ## License
 
