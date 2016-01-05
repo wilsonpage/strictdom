@@ -66,11 +66,11 @@ element.clientWidth; // throws
 - `Range#getBoundingClientRect()`
 - `MouseEvent#layerX`
 - `MouseEvent#layerY`
-- `MouseEvent#offsetX
+- `MouseEvent#offsetX`
 - `MouseEvent#offsetY`
 - `HTMLButtonElement#reportValidity()`
 - `HTMLDialogElement#showModal()`
-- `HTMLFieldSetElement#reportValidity()
+- `HTMLFieldSetElement#reportValidity()`
 - `HTMLImageElement#width`
 - `HTMLImageElement#height`
 - `HTMLImageElement#x`
