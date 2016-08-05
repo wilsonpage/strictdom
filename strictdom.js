@@ -8,7 +8,7 @@ var debug = 0 ? console.log.bind(console, '[strictdom]') : function() {};
  *
  * @type {Boolean}
  */
-var isWebkit = !!window.webkitURL;
+// var isWebkit = !!window.webkitURL;
 
 /**
  * List of properties observed.
@@ -164,42 +164,42 @@ var properties = {
         }
       },
 
-      innerWidth: {
-        type: isWebkit ? Value : Measure,
-
-        /**
-         * Throws when the window is nested (in <iframe>)
-         * and StrictDom is not in the 'measure' phase.
-         *
-         * @param  {StrictDom} strictdom
-         */
-        test: function(strictdom) {
-          var inIframe = window !== window.top;
-          if (inIframe && strictdom.not('measure')) {
-            throw error(2, '`.innerWidth` (in iframe)');
-          }
-        }
-      },
-
-      innerHeight: {
-        type: isWebkit ? Value : Measure,
-
-        /**
-         * Throws when the window is nested (in <iframe>)
-         * and StrictDom is not in the 'measure' phase.
-         *
-         * @param  {StrictDom} strictdom
-         */
-        test: function(strictdom) {
-          var inIframe = window !== window.top;
-          if (inIframe && strictdom.not('measure')) {
-            throw error(2, '`.innerHeight` (in iframe)');
-          }
-        }
-      },
-
-      scrollX: isWebkit ? Value : Measure,
-      scrollY: isWebkit ? Value : Measure,
+      // innerWidth: {
+      //   type: isWebkit ? Value : Measure,
+      //
+      //   /**
+      //    * Throws when the window is nested (in <iframe>)
+      //    * and StrictDom is not in the 'measure' phase.
+      //    *
+      //    * @param  {StrictDom} strictdom
+      //    */
+      //   test: function(strictdom) {
+      //     var inIframe = window !== window.top;
+      //     if (inIframe && strictdom.not('measure')) {
+      //       throw error(2, '`.innerWidth` (in iframe)');
+      //     }
+      //   }
+      // },
+      //
+      // innerHeight: {
+      //   type: isWebkit ? Value : Measure,
+      //
+      //   /**
+      //    * Throws when the window is nested (in <iframe>)
+      //    * and StrictDom is not in the 'measure' phase.
+      //    *
+      //    * @param  {StrictDom} strictdom
+      //    */
+      //   test: function(strictdom) {
+      //     var inIframe = window !== window.top;
+      //     if (inIframe && strictdom.not('measure')) {
+      //       throw error(2, '`.innerHeight` (in iframe)');
+      //     }
+      //   }
+      // },
+      //
+      // scrollX: isWebkit ? Value : Measure,
+      // scrollY: isWebkit ? Value : Measure,
       scrollBy: Mutate,
       scrollTo: Mutate,
       scroll: Mutate,

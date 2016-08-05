@@ -341,7 +341,7 @@ suite('strictdom', function() {
 
     // Haven't found a way of testing this
     // yet as Karma runs tests inside an iframe
-    test('.innerWidth (iframe)', function() {
+    test.skip('.innerWidth (iframe)', function() {
       var result = testMeasure(function() { return window.innerWidth; });
       assert.equal(result, winWidth);
     });
@@ -413,13 +413,13 @@ suite('strictdom', function() {
   suite('.disable()', function() {
     test('it stops observing', function() {
       assert.throws(function() {
-        window.innerWidth;
+        document.body.clientWidth;
       });
 
       strictdom.disable();
 
       assert.doesNotThrow(function() {
-        window.innerWidth;
+        document.body.clientWidth;
       });
     });
   });
