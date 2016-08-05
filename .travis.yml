@@ -1,7 +1,7 @@
+sudo: required
+dist: trusty
 language: node_js
-
-node_js:
-  - 5.1.0
+node_js: 5.1.0
 
 addons:
   firefox: latest
