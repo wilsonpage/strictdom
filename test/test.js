@@ -234,6 +234,29 @@ suite('strictdom', function() {
     });
   });
 
+  suite('MouseEvent', function() {
+    var evt;
+
+    setup(function() {
+      evt = new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      });
+    });
+
+    test('.offsetX', function() {
+      var result = testMeasure(function() { return evt.offsetX; });
+      assert.equal(result, 0);
+    });
+
+    test('.offsetY', function() {
+      var result = testMeasure(function() { return evt.offsetY; });
+      assert.equal(result, 0);
+    });
+  });
+
+
   suite('HTMLImageElement', function() {
     var width = 512;
     var height = 532;
